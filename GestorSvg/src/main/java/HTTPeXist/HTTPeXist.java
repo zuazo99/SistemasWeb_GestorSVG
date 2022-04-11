@@ -36,11 +36,11 @@ public class HTTPeXist {
 		HttpURLConnection connect = (HttpURLConnection) url.openConnection();
 		connect.setRequestMethod("GET");
 
-		/* Crear codigo de autorizacion y meter en la cabecera Authorization */
-		String codigoBase64 = getAuthorizationCode("admin", "admin");
-		connect.setRequestProperty("Authorization", "Basic " + codigoBase64);
-		connect.connect();
-		System.out.println("<--READ-status: " + connect.getResponseCode());
+//		/* Crear codigo de autorizacion y meter en la cabecera Authorization */
+//		String codigoBase64 = getAuthorizationCode("admin", "admin");
+//		connect.setRequestProperty("Authorization", "Basic " + codigoBase64);
+//		connect.connect();
+//		System.out.println("<--READ-status: " + connect.getResponseCode());
 
 		/* Lee el contenido del mensaje de respuesta- RECUSRSO */
 		InputStream connectInputStream = connect.getInputStream();
@@ -63,6 +63,12 @@ public class HTTPeXist {
 		HttpURLConnection connect = (HttpURLConnection) url.openConnection();
 		connect.setRequestMethod("GET");
 
+//		/* Crear codigo de autorizacion y meter en la cabecera Authorization */
+//		String codigoBase64 = getAuthorizationCode("admin", "admin");
+//		connect.setRequestProperty("Authorization", "Basic " + codigoBase64);
+//		connect.connect();
+//		System.out.println("<--READ-status: " + connect.getResponseCode());
+
 		/* Irakurri erantzunaren edukia - RECURSO */
 		InputStream inputStream = connect.getInputStream();
 		InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
@@ -76,7 +82,7 @@ public class HTTPeXist {
 		return lista;
 	}
 
-	/* -->SUBIR recurso en un fichero */
+	/* -->SUBIR recurso desde un fichero */
 	public int subir(String collection, String resourceFileName) throws IOException {
 
 		System.out.println("-->SUBIR: " + resourceFileName + " a " + collection);
@@ -120,13 +126,26 @@ public class HTTPeXist {
 
 	}
 
-	/* -->DELETE borrar un reurso */
-	public int delete(String collection, String resourceName) {
+	/* -->DELETE borrar un recurso */
+	public int delete(String collection, String resourceName)throws IOException {
 		int status = 0;
+		String resource = new String();
+		URL url = new URL(
+				this.server + "/exist/rest" + XmldbURI.ROOT_COLLECTION_URI + "/" + collection + "/" + resourceName);
+		System.out.println("-->READ-url:" + url.toString());
+		HttpURLConnection connect = (HttpURLConnection) url.openConnection();
+		connect.setRequestMethod("DELETE");
 
-		// TODO
+		/* Crear codigo de autorizacion y meter en la cabecera Authorization */
+		String codigoBase64 = getAuthorizationCode("admin", "admin");
+		connect.setRequestProperty("Authorization", "Basic " + codigoBase64);
+		connect.connect();
+		System.out.println("<--READ-status: " + connect.getResponseCode());
 
-		return status;
+		status = connect.getResponseCode();
+		System.out.println("<--SUBIR: " + status);
+		System.out.println("<--SUBIR: " + connect.getResponseMessage());
+		return connect.getResponseCode();
 
 	}
 
@@ -140,12 +159,27 @@ public class HTTPeXist {
 	}
 
 	/* -->DELETE borrar coleccion */
-	public int delete(String collection) {
+	public int delete(String collection) throws IOException {
 		int status = 0;
 
-		//TODO
+		String resource = new String();
+		URL url = new URL(
+				this.server + "/exist/rest" + XmldbURI.ROOT_COLLECTION_URI + "/" + collection);
+		System.out.println("-->READ-url:" + url.toString());
+		HttpURLConnection connect = (HttpURLConnection) url.openConnection();
+		connect.setRequestMethod("DELETE");
 
-		return status;
+		/* Crear codigo de autorizacion y meter en la cabecera Authorization */
+		String codigoBase64 = getAuthorizationCode("admin", "admin");
+		connect.setRequestProperty("Authorization", "Basic " + codigoBase64);
+		connect.connect();
+		System.out.println("<--READ-status: " + connect.getResponseCode());
+
+		status = connect.getResponseCode();
+		System.out.println("<--SUBIR: " + status);
+		System.out.println("<--SUBIR: " + connect.getResponseMessage());
+		return connect.getResponseCode();
+
 	}
 
 	/*-->CREATE (String collection)  */
@@ -200,6 +234,9 @@ public class HTTPeXist {
 		String imagen = prueba.read(collection, resourceName);
 		System.out.println("Execute method --> list()");
 		String lista = prueba.list(collection);
+		System.out.println("Execute method --> delete()");
+		int status = prueba.delete(collection, "elipse.svg");
+		System.out.println("Delete_Egoera--> " + status);
 
 	}
 }
