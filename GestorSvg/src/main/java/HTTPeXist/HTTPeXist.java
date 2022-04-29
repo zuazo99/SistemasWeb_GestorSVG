@@ -18,6 +18,11 @@ import javax.xml.transform.TransformerException;
 import org.exist.xmldb.XmldbURI;
 import org.xml.sax.SAXException;
 
+/*
+
+		1.Entrega java klasea
+ */
+
 public class HTTPeXist {
 
 	private String server;

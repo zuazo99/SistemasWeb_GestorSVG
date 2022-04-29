@@ -1,6 +1,7 @@
 package servlets;
 
 import java.io.IOException;
+import java.util.Random;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -39,7 +40,7 @@ public class SaveUpdateResource extends HttpServlet {
 		request.setAttribute("svgName", svgName);
 		request.setAttribute("imagenSVG", imagenSVG);
 
-		String imagenURI = "http://localhost:8080/exist/rest/db/" + collection + "/" + svgName + "/";
+		String imagenURI = "http://localhost:8080/exist/rest/db/" + collection + "/" + svgName + "/" + "?nocache=" + new Random().nextInt();
 		request.setAttribute("imagenURI", imagenURI);
 
 		if (opcion.equals("save")) {
